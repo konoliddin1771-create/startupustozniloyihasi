@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrbitAcademy 3D - Ultimate Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Harakatlanuvchi jonli fon yulduzlari -->
+    <div class="space-bg">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="nebula"></div>
+    </div>
+
+    <!-- 🌌 PREMIUM GLASS NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">OrbitAcademy <span>3D</span></div>
+            <div class="nav-links">
+                <button id="nav-home" class="active" onclick="switchPage('home')">🏠 Asosiy</button>
+                <button id="nav-parent" onclick="switchPage('parent')">🪐 Koinot Paneli</button>
+                <button id="nav-teacher" onclick="switchPage('teacher')">🧑‍🏫 CRM Davomat</button>
+                <button id="nav-ai" class="ai-nav-btn" onclick="switchPage('ai')">🤖 OrbitAI Chat</button>
+                <button id="nav-pricing" class="pro-nav-btn" onclick="switchPage('pricing')">👑 PRO</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 🏠 1-BLOK: ASOSIY TAQDIMOT (HOME) -->
+    <div id="page-home" class="page active">
+        <section class="hero-section">
+            <div class="hero-content">
+                <span class="badge-promo">⚡ THE NEXT GENERATION</span>
+                <h1>Ta'lim Markazingiz Uchun <br><span class="text-gradient">3D Kosmik Gamifikatsiya</span></h1>
+                <p>Oʻquvchilar darsga qatnashib, oʻzlarining shaxsiy jonli sayyoralarini evolutsiya qilishadi. 30 XP yigʻilganda sehrli portlash effekti bilan yutuqlar ochiladi!</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="switchPage('parent')">Koinotga Kirish 🪐</button>
+                    <button class="btn btn-secondary" onclick="switchPage('pricing')">Tariflar & Litsenziya</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="icon-wrap">🔮</div>
+                <h3>Dinamik 3D Fazo</h3>
+                <p>Har bir oʻquvchi koinot bagʻrida haqiqiy fizikaviy suzuvchi sayyoraga ega boʻladi.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-wrap">🎁</div>
+                <h3>Sehrli Portlash (30 XP)</h3>
+                <p>30 ball toʻplanishi bilan 3D animatsiyali yutuqlar sandigʻi ishga tushadi.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-wrap">🤖</div>
+                <h3>Aqlli AI Konsultant</h3>
+                <p>Oʻquv markazingiz haqidagi barcha savollarga faqat siz xohlagandek aniq javob beruvchi robot.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- 👨‍👩‍👦 2-BLOK: OTA-ONALAR PANELI -->
+    <div id="page-parent" class="page">
+        <div class="dashboard-wrapper">
+            <div class="side-panel">
+                <h2>🛸 Sayyora Yaratish</h2>
+                <div class="form-group">
+                    <label>Oʻquvchi ismi:</label>
+                    <input type="text" id="studentName" placeholder="Masalan: Nozima">
+                </div>
+                <div class="form-group">
+                    <label>Kurs yoʻnalishi:</label>
+                    <select id="courseType">
+                        <option value="English 🇬🇧">English Planet 🇬🇧</option>
+                        <option value="IT-Code 💻">Code Star 💻</option>
+                    </select>
+                </div>
+                <button id="spawnBtn" class="btn btn-primary" style="width: 100%;">Koinotga Uchirish 🚀</button>
+                
+                <div id="limitWarning" class="limit-box hidden">
+                    <p>⚠️ Bepul litsenziya limiti tugadi!</p>
+                    <button class="btn-upgrade-now" onclick="switchPage('pricing')">PRO-ga oʻtish 👑</button>
+                </div>
+            </div>
+
+            <div class="universe-container">
+                <div class="universe-3d" id="universe3D"></div>
+
+                <!-- 🎉 ANIMATSIYALIK SOVG'A MODALI 🎉 -->
+                <div class="gift-popup hidden" id="giftPopup">
+                    <div class="gift-glow-effect"></div>
+                    <span class="gift-icon">🎁</span>
+                    <h2>30 XP Mukofoti! 🎉</h2>
+                    <p>Tabriklaymiz, sehrli kosmik sandiq portlashga tayyor.</p>
+                    <button id="openGiftBtn" class="btn btn-gift">Sandiqni Portlatish 🪄</button>
+                    
+                    <div id="giftResult" class="gift-result hidden">
+                        <div id="giftVisual"></div>
+                        <div id="giftText"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🧑‍🏫 3-BLOK: OʻQITUVCHILAR JADVALI -->
+    <div id="page-teacher" class="page">
+        <main class="teacher-container">
+            <div class="panel-card">
+                <div class="card-header">
+                    <h2>🧑‍🏫 Akademik Davomat va CRM Markazi</h2>
+                    <p>Oʻquvchilarga ball bering, ularning sayyoralari darhol oʻzgaradi.</p>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Oʻquvchi</th>
+                                <th>Yoʻnalishi</th>
+                                <th>Reyting (XP)</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 🤖 4-BLOK: ORBITAI INTELLEKT CHAT SAHIFASI -->
+    <div id="page-ai" class="page">
+        <div class="ai-container">
+            <div class="ai-chat-card">
+                <div class="ai-chat-header">
+                    <div class="ai-status-pulse">🤖</div>
+                    <div>
+                        <h3>OrbitAI Konsultant</h3>
+                        <p>Faqat markaz va oʻquv tizimi boʻyicha aqlli yordamchi</p>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="msg ai-msg">Salom! Men OrbitAcademy kosmik robottiman. Kurslarimiz narxi, 3D oʻquv tizimi yoki sovgʻalar haqida nima bilmoqchisiz? 🪐</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="aiInput" placeholder="Markaz haqida biror narsa so'rang...">
+                    <button id="sendAiBtn">Yuborish 🚀</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- 💎 5-BLOK: PULLIK TARIFLAR (PRICING SAHIFASI) -->
+<div id="page-pricing" class="page">
+    <section class="pricing-section">
+        <div class="pricing-header">
+            <h2>Koinotingizni Rivojlantiring</h2>
+            <p>Markazingiz hajmiga qarab premium tariflarni faollashtiring</p>
+        </div>
+
+        <!-- 🚀 MANA SHU JILD (DIV) HAMMA NARSANI YONMA-YON CHIROYLI QILADI -->
+        <div class="pricing-grid">
+
+            <!-- 1-KARTA: BEPUL TARIF -->
+            <div class="price-card">
+                <h3>Free Demo</h3>
+                <div class="price">0 soʻm</div>
+                <p class="price-desc">Tizim imkoniyatlarini sinash rejimi</p>
+                <ul class="price-features">
+                    <li>Maksimal 1 ta sayyora</li>
+                    <li>Standart koinot fizikasi</li>
+                    <li>+15 XP start bonus</li>
+                </ul>
+                <button class="btn btn-secondary" style="width:100%" disabled>Hozirgi Rejim</button>
+            </div>
+
+            <!-- 2-KARTA: PRO PREMIUM TARIF -->
+            <div class="price-card pro-card">
+                <div class="premium-tag">PREMIUM</div>
+                <h3>Enterprise PRO 👑</h3>
+                <div class="price">50,000 soʻm <span>/ oy</span></div>
+                <p class="price-desc">Nufuzli va zamonaviy oʻquv markazlari uchun</p>
+                <ul class="price-features">
+                    <li>✨ Cheksiz 3D sayyoralar uchirish</li>
+                    <li>🪐 Saturn oltin halqalari (Premium skin)</li>
+                    <li>🎁 30 XP mukofot portlash tizimi</li>
+                    <li>📊 Advanced CRM davomat moduli</li>
+                </ul>
+                <button id="activateProBtn" class="btn btn-primary" style="width: 100%;">PRO-ni Yoqish 💎</button>
+            </div>
+
+        </div> <!-- pricing-grid shu yerda yopilishi shart! -->
+    </section>
+</div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>

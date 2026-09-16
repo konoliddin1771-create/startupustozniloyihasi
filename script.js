@@ -5,8 +5,8 @@ let spaceStudents = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let isUserPro = JSON.parse(localStorage.getItem(PRO_KEY)) || false;
 
 // 🤖 GEMINI AI SOZLAMASI
-const GEMINI_API_KEY = "URTINGIZGA_GEMINI_API_KEY_QO_SHING"; 
-const GEMINI_URL = `https://googleapis.com{GEMINI_API_KEY}`;
+const GEMINI_API_KEY = "URTINGIZGA_GEMINI_API_KEY_QO_SHING";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 const SYSTEM_PROMPT = `Siz "OrbitAcademy 3D" o'quv markazining konsultantisiz.
 Faqat markaz doirasida o'zbekcha qisqa javob bering. Boshqa mavzularni muloyim rad eting!
@@ -60,7 +60,7 @@ function switchPage(pageName) {
 function renderUniverse() {
     if (!universe3D) return;
     universe3D.innerHTML = '';
-    
+
     let foundGiftStudent = false;
     activeGiftIndex = null;
 
@@ -70,8 +70,8 @@ function renderUniverse() {
         planet.style.left = `${student.posX}%`;
         planet.style.top = `${student.posY}%`;
 
-        let colorGradient = student.course.includes('English') 
-            ? "radial-gradient(circle at 30% 30%, #ec4899, #3b82f6)" 
+        let colorGradient = student.course.includes('English')
+            ? "radial-gradient(circle at 30% 30%, #ec4899, #3b82f6)"
             : "radial-gradient(circle at 30% 30%, #10b981, #06b6d4)";
 
         let ringHTML = isUserPro ? `<div class="premium-ring"></div>` : '';
@@ -134,15 +134,15 @@ if (openGiftBtn) {
         const randomGift = giftsList[Math.floor(Math.random() * giftsList.length)];
         giftVisual.textContent = randomGift.emoji;
         giftText.textContent = randomGift.name;
-        
+
         document.getElementById('boxEmoji').style.display = "none";
         openGiftBtn.style.display = 'none';
         giftResult.classList.remove('hidden');
 
-        spaceStudents[activeGiftIndex].coins = 0; 
+        spaceStudents[activeGiftIndex].coins = 0;
         spaceStudents[activeGiftIndex].giftOpened = true;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(spaceStudents));
-        
+
         setTimeout(() => {
             giftPopup.classList.add('hidden');
             giftResult.classList.add('hidden');
@@ -181,13 +181,13 @@ function renderTeacherTable() {
 window.givePoints = function(index) {
     spaceStudents = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     if (!spaceStudents[index]) return;
-    
+
     spaceStudents[index].coins += 15;
     if (spaceStudents[index].coins >= 30) spaceStudents[index].giftOpened = false;
-    
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(spaceStudents));
     renderTeacherTable();
-    
+
     if (spaceStudents[index].coins >= 30) {
         alert(`${spaceStudents[index].name} 30 XP yigʻdi! Ota-onalar panelida sehrli quti tayyor! 🎁`);
         switchPage('parent');
@@ -208,6 +208,11 @@ async function handleAiChat() {
     aiInput.value = '';
 
     const loadingDiv = appendMessage("OrbitAI o'ylamoqda... 🌌", 'ai-msg');
+
+    if (!GEMINI_API_KEY || GEMINI_API_KEY === "URTINGIZGA_GEMINI_API_KEY_QO_SHING") {
+        loadingDiv.textContent = "Bot to'liq ishlashi uchun script.js fayliga haqiqiy Gemini API kalitini ulang. 🪐";
+        return;
+    }
 
     try {
         const response = await fetch(GEMINI_URL, {
@@ -242,38 +247,5 @@ if (activateProBtn) {
         }
     });
 }
-
-// API kalitsiz ishlaydigan sinov funksiyasi
-function handleAiChat() {
-    const userText = aiInput.value.trim();
-    if (!userText) return;
-
-    // 1. Siz yozgan xabarni o'ng tomonga chiqarish
-    appendMessage(userText, 'user-msg');
-    aiInput.value = '';
-
-    // Yuklanmoqda effekti
-    const loadingDiv = appendMessage("OrbitAI o'ylamoqda... 🌌", 'ai-msg');
-
-    const GEMINI_API_KEY = "URTINGIZGA_GEMINI_API_KEY_QO_SHING";
-
-
-    // 1 soniyadan keyin javob qaytarish
-    setTimeout(() => {
-        let reply = "Kechirasiz, men faqat OrbitAcademy oʻquv markazi, kurslar narxi (400,000 soʻm) va 30 XP sovgʻalari haqida gapira olaman! Bot to'liq ishlashi uchun script.js fayliga haqiqiy Gemini API kalitini ulang. 🪐";
-        
-        // Savolga qarab aqlli javoblar
-        if (userText.toLowerCase().includes('narx') || userText.toLowerCase().includes('pul')) {
-            reply = "OrbitAcademy markazimizda darslar oylik toʻlovi 400,000 soʻm. PRO tarifimiz esa oyiga 50,000 soʻm! 💰";
-        } else if (userText.toLowerCase().includes('sovga') || userText.toLowerCase().includes('xp')) {
-            reply = "Oʻquvchilar darsga kelib 30 XP ball yigʻishsa, ekranda sehrli quti ochiladi va ichidan kosmik sovgʻalar chiqadi! 🎁🚀";
-        } else if (userText.toLowerCase().includes('kurs') || userText.toLowerCase().includes('planet')) {
-            reply = "Bizda ingliz tili (English Planet) va IT-Dasturlash (Code Star) kurslari mavjud! 💻🇬🇧";
-        }
-
-        loadingDiv.textContent = reply;
-    }, 1000);
-}
-
 
 renderUniverse();
